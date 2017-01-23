@@ -1,7 +1,7 @@
 Flask-Session
 =============
 
-.. module:: flask.ext.session
+.. module:: flask_session
 
 Welcome to Flask-Session's documentation.  Flask-Session is an extension for
 `Flask`_ that adds support for Server-side ``Session`` to your application.
@@ -25,7 +25,7 @@ Install the extension with the following command::
     $ easy_install Flask-Session
 
 or alternatively if you have pip installed::
-    
+
     $ pip install Flask-Session
 
 Quickstart
@@ -39,9 +39,9 @@ then create the :class:`Session` object by passing it the application.
 
 The ``Session`` instance is not used for direct access, you should always use
 :class:`flask.session`::
-    
+
     from flask import Flask, session
-    from flask.ext.session import Session
+    from flask_session import Session
 
     app = Flask(__name__)
     # Check Configuration section for more details
@@ -60,7 +60,7 @@ The ``Session`` instance is not used for direct access, you should always use
 
 You may also set up your application later using :meth:`~Session.init_app`
 method::
-    
+
     sess = Session()
     sess.init_app(app)
 
@@ -73,7 +73,7 @@ your app first before you pass it to Flask-Session.  Note that these values
 cannot be modified after the ``init_app`` was applyed so make sure to not
 modify them at runtime.
 
-We are not supplying something like ``SESSION_REDIS_HOST`` and 
+We are not supplying something like ``SESSION_REDIS_HOST`` and
 ``SESSION_REDIS_PORT``, if you want to use the ``RedisSessionInterface``,
 you should configure ``SESSION_REDIS`` to your own ``redis.Redis`` instance.
 This gives you more flexibility, like maybe you want to use the same
@@ -81,7 +81,7 @@ This gives you more flexibility, like maybe you want to use the same
 two ``redis.Redis`` instance in the same process.
 
 The following configuration values are builtin configuration values within
-Flask itself that are related to session.  **They are all understood by 
+Flask itself that are related to session.  **They are all understood by
 Flask-Session, for example, you should use PERMANENT_SESSION_LIFETIME
 to control your session lifetime.**
 
@@ -127,7 +127,7 @@ A list of configuration keys also understood by the extension:
                               ``False``
 ``SESSION_KEY_PREFIX``        A prefix that is added before all session keys.
                               This makes it possible to use the same backend
-                              storage server for different apps, default 
+                              storage server for different apps, default
                               "session:"
 ``SESSION_REDIS``             A ``redis.Redis`` instance, default connect to
                               ``127.0.0.1:6379``
@@ -156,7 +156,7 @@ A list of configuration keys also understood by the extension:
 Basically you only need to configure ``SESSION_TYPE``.
 
 .. note::
-    
+
     By default, all non-null sessions in Flask-Session are permanent.
 
 .. versionadded:: 0.2
@@ -230,11 +230,11 @@ API
 .. autoclass:: Session
    :members: init_app
 
-.. autoclass:: flask.ext.session.sessions.ServerSideSession
-   
+.. autoclass:: flask_session.sessions.ServerSideSession
+
    .. attribute:: sid
-       
-       Session id, internally we use :func:`uuid.uuid4` to generate one 
+
+       Session id, internally we use :func:`uuid.uuid4` to generate one
        session id. You can access it with ``session.sid``.
 
 .. autoclass:: NullSessionInterface

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    flaskext.session
+    flask_session
     ~~~~~~~~~~~~~~~~
 
     Adds server session support to your application.

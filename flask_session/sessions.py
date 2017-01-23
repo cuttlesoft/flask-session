@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    flaskext.session.sessions
+    flask_session.sessions
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Server-side Sessions and SessionInterfaces.
@@ -161,7 +161,7 @@ class RedisSessionInterface(SessionInterface):
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
         expires = self.get_expiration_time(app, session)
-        val = self.serializer.dumps(dict(session))
+        val = self.serializer.dumps(dict(session), 0)
         self.redis.setex(name=self.key_prefix + session.sid, value=val,
                          time=total_seconds(app.permanent_session_lifetime))
         if self.use_signer:
@@ -275,10 +275,7 @@ class MemcachedSessionInterface(SessionInterface):
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
         expires = self.get_expiration_time(app, session)
-        if not PY2:
-            val = self.serializer.dumps(dict(session), 0)
-        else:
-            val = self.serializer.dumps(dict(session))
+        val = self.serializer.dumps(dict(session), 0)
         self.client.set(full_session_key, val, self._get_memcache_timeout(
                         total_seconds(app.permanent_session_lifetime)))
         if self.use_signer:
@@ -435,7 +432,7 @@ class MongoDBSessionInterface(SessionInterface):
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
         expires = self.get_expiration_time(app, session)
-        val = self.serializer.dumps(dict(session))
+        val = self.serializer.dumps(dict(session), 0)
         self.store.update({'id': store_id},
                           {'id': store_id,
                            'val': val,
@@ -479,7 +476,7 @@ class SqlAlchemySessionInterface(SessionInterface):
             __tablename__ = table
 
             id = self.db.Column(self.db.Integer, primary_key=True)
-            session_id = self.db.Column(self.db.String(256), unique=True)
+            session_id = self.db.Column(self.db.Text, unique=True)
             data = self.db.Column(self.db.LargeBinary)
             expiry = self.db.Column(self.db.DateTime)
 
@@ -491,7 +488,7 @@ class SqlAlchemySessionInterface(SessionInterface):
             def __repr__(self):
                 return '<Session data %s>' % self.data
 
-        self.db.create_all()
+        # self.db.create_all()
         self.sql_session_model = Session
 
     def open_session(self, app, request):
@@ -545,7 +542,7 @@ class SqlAlchemySessionInterface(SessionInterface):
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)
         expires = self.get_expiration_time(app, session)
-        val = self.serializer.dumps(dict(session))
+        val = self.serializer.dumps(dict(session), 0)
         if saved_session:
             saved_session.data = val
             saved_session.expiry = expires
